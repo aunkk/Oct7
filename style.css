@@ -1,0 +1,184 @@
+/* รีเซ็ตค่าเริ่มต้น */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #eaddd3; /* สีพื้นหลังเว็บอ่อนๆ ให้หนังสือเด่นขึ้น */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Mali', cursive;
+}
+
+/* ฟอนต์ที่ตั้งค่าไว้ */
+.handwriting { font-family: 'Mali', cursive; }
+.typewriter { font-family: 'Chakra Petch', sans-serif; }
+
+/* การจัดวางหน้าหนังสือ */
+.book-wrapper {
+    perspective: 1500px;
+}
+
+.book {
+    width: 350px;
+    height: 450px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+/* กระดาษแต่ละแผ่น */
+.paper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-style: preserve-3d;
+    transition: transform 1s ease-in-out;
+    transform-origin: left center;
+    cursor: pointer;
+}
+
+/* จัดลำดับซ้อนของกระดาษ (Z-index) */
+#p1 { z-index: 3; }
+#p2 { z-index: 2; }
+#p3 { z-index: 1; }
+
+/* เมื่อพลิกหน้ากระดาษ */
+.paper.flipped {
+    transform: rotateY(-180deg);
+}
+
+/* หน้า-หลัง ของกระดาษแต่ละแผ่น */
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* ซ่อนด้านหลังเมื่อพลิก */
+    border-radius: 5px 15px 15px 5px;
+    box-shadow: inset 4px 0 10px rgba(0,0,0,0.1); /* เงาสันหนังสือ */
+    overflow: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
+    border-radius: 15px 5px 5px 15px;
+    box-shadow: inset -4px 0 10px rgba(0,0,0,0.1);
+}
+
+/* พื้นหลังสไตล์คราฟท์วินเทจ */
+.kraft-bg {
+    background-color: #b58d66; /* สีน้ำตาลคราฟท์ */
+    /* สามารถใส่ภาพพื้นหลัง Texture กระดาษคราฟท์ได้โดยใช้ background-image */
+}
+
+/* พื้นหลังสไตล์กระดาษเก่า (Sepia) */
+.sepia-bg {
+    background-color: #f4e8d3; /* สีซีดๆ อมเหลือง */
+    color: #4a3b32; /* สีข้อความน้ำตาลเข้มดูเก่า */
+}
+
+/* เงาหน้าปก */
+.cover-shadow {
+    box-shadow: inset 8px 0 15px rgba(0,0,0,0.3), 5px 5px 15px rgba(0,0,0,0.2);
+}
+
+/* เนื้อหาด้านใน */
+.page-content {
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cover-content {
+    align-items: center;
+    color: #3e2723;
+}
+
+.title-text {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.star-graphic {
+    font-size: 2.5rem;
+    letter-spacing: 10px;
+    margin: 20px 0;
+}
+
+.click-hint {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.quote-text {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.text-center { text-align: center; }
+
+/* Responsive 100% */
+@media (min-width: 800px) {
+    /* ถ้าจอใหญ่ (PC/Tablet) ให้ขยับหนังสือไปทางขวา เพื่อเวลาแผ่ออกมา 2 หน้าจะอยู่ตรงกลางจอ */
+    .book {
+        transform: translateX(50%);
+    }
+    /* เมื่อมีหน้ากระดาษถูกเปิด หนังสือจะขยับกลับมาตรงกลางนิดนึงให้สมดุล */
+    .book.open {
+        transform: translateX(175px); 
+    }
+}
+
+/* แอนิเมชันฝนดาวตก */
+#shooting-stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    display: none; /* ซ่อนไว้ก่อน */
+}
+
+.shooting-star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px white;
+    animation: shoot 2s linear infinite;
+    opacity: 0;
+}
+
+.shooting-star::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 100%;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+}
+
+@keyframes shoot {
+    0% { transform: translate(100vw, -100px) rotate(45deg); opacity: 1; }
+    100% { transform: translate(-100px, 100vh) rotate(45deg); opacity: 0; }
+}
+
