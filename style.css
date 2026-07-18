@@ -17,7 +17,7 @@ body {
 
 /* ฟอนต์ที่ตั้งค่าไว้ */
 .handwriting { font-family: 'Mali', cursive; }
-.typewriter { font-family: 'Chakra Petch', sans-serif; }
+.charm-text { font-family: 'Charm', cursive; }
 
 /* การจัดวางหน้าหนังสือ */
 .book-wrapper {
