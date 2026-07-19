@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #eaddd3; /* สีพื้นหลังเว็บอ่อนๆ ให้หนังสือเด่นขึ้น */
+    background-color: #0d1226; /* สีพื้นหลังเว็บอ่อนๆ ให้หนังสือเด่นขึ้น */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,14 +44,6 @@ body {
     transform-origin: left center;
     cursor: pointer;
 }
-
-/* จัดลำดับซ้อนของกระดาษ (Z-index) */
-/* จัดลำดับซ้อนของกระดาษ (Z-index) */
-#p1 { z-index: 0; }
-#p2 { z-index: 3; }
-#p2-half { z-index: 2; } /* กระดาษแผ่นใหม่ที่เพิ่งเพิ่มเข้าไป */
-#p3 { z-index: 1; }
-#p4 { z-index: 4; }
 
 /* เมื่อพลิกหน้ากระดาษ */
 .paper.flipped {
@@ -146,6 +138,25 @@ body {
     }
 }
 
+/* Responsive 100% */
+@media (min-width: 800px) {
+    /* 1. ปกหน้า: วางอยู่ตรงกลางจอพอดี */
+    .book {
+        transform: translateX(0); 
+        transition: transform 0.8s ease; /* เพิ่มความสมูทเวลาสมุดสไลด์ไปมา */
+    }
+    
+    /* 2. เมื่อกางออก: สไลด์หนังสือไปทางขวา 175px เพื่อให้ "สันหนังสือ (รอยพับ)" อยู่ตรงกลางจอ */
+    .book.open {
+        transform: translateX(175px); 
+    }
+    
+    /* 3. เมื่อพลิกหน้าสุดท้าย: สไลด์หนังสือไปทางขวา 350px เพื่อดัน "ปกหลัง" ให้กลับมาอยู่ตรงกลางจอ */
+    .book.closed-last {
+        transform: translateX(350px); 
+    }
+}
+
 /* แอนิเมชันฝนดาวตก */
 #shooting-stars-container {
     position: fixed;
@@ -177,11 +188,11 @@ body {
     right: 100%;
     width: 50px;
     height: 2px;
-    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(226, 204, 8));
 }
 
 @keyframes shoot {
-    0% { transform: translate(100vw, -100px) rotate(45deg); opacity: 1; }
-    100% { transform: translate(-100px, 100vh) rotate(45deg); opacity: 0; }
+    0% { transform: translate(100vw, -100px) rotate(155deg); opacity: 1; }
+    100% { transform: translate(-100px, 100vh) rotate(145deg); opacity: 0; }
 }
 
