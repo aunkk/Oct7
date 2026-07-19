@@ -126,16 +126,43 @@ body {
 
 .text-center { text-align: center; }
 
-/* Responsive 100% */
-@media (min-width: 800px) {
-    /* ถ้าจอใหญ่ (PC/Tablet) ให้ขยับหนังสือไปทางขวา เพื่อเวลาแผ่ออกมา 2 หน้าจะอยู่ตรงกลางจอ */
-    .book {
-        transform: translateX(50%);
-    }
-    /* เมื่อมีหน้ากระดาษถูกเปิด หนังสือจะขยับกลับมาตรงกลางนิดนึงให้สมดุล */
-    .book.open {
-        transform: translateX(175px); 
-    }
+/* Overlay สำหรับข้อความสุดท้าย */
+#final-quote-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* ใช้ Flexbox จัดข้อความให้อยู่กลางจอพอดี */
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* ตั้งค่าเริ่มต้น: ซ่อนไว้ก่อน (opacity: 0) และขยับลงมานิดนึง (translateY(20px)) */
+    opacity: 0; 
+    transform: translateY(20px); 
+    /* pointer-events: none; เพื่อไม่ให้ div นี้ไปบล็อคการคลิกหน้าเว็บตอนที่มันยังซ่อนอยู่ */
+    pointer-events: none; 
+    /* ✅ ตั้งค่าความเร็วของแอนิเมชัน (เช่น เล่น 1.5 วินาที) */
+    transition: opacity 1.5s ease-out, transform 1.5s ease-out; 
+    /* ให้เวลาสมุดปิดเรียบร้อยก่อนค่อยเริ่มแอนิเมชัน (ดีเลย์ 0.8 วินาที) */
+    transition-delay: 0.8s; 
+    z-index: 20; /* ให้ข้อความลอยทับฝูงดาวตกและหนังสือ (z-index สูงๆ) */
+}
+
+/* ✅ คลาสสำหรับสั่งแอนิเมชันปรากฏ (จะถูกเพิ่มโดย JavaScript) */
+#final-quote-overlay.show {
+    opacity: 1; /* แสดงข้อความ (opacity เป็น 1) */
+    transform: translateY(0); /* ขยับขึ้นมาที่ตำแหน่งปกติ (translateY(0)) */
+    pointer-events: auto; /* เมื่อปรากฏแล้ว ให้สามารถคลิกที่ข้อความได้ (เช่น ถ้ามีลิงก์) */
+}
+
+/* ตั้งค่าข้อความสุดท้าย */
+#final-quote-overlay p {
+    font-size: 2.2rem; /* ปรับขนาดให้ใหญ่เด่นกลางจอ */
+    line-height: 1.6;
+    color: #4a3b32; /* สีน้ำตาลเข้มดูคลาสสิก หรือสีขาวก็ได้ตามชอบครับ */
+    text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* เพิ่มเงาให้ข้อความดูมิติและลอยขึ้นมา */
 }
 
 /* Responsive 100% */
