@@ -1,142 +1,187 @@
-/* --- JS ทั้งหมด: วางทับไฟล์ script.js เดิมได้เลย --- */
+const panels = [...document.querySelectorAll('.panel')];
+const navButtons = [...document.querySelectorAll('.nav-btn')];
+const dots = [...document.querySelectorAll('.dot')];
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const celebrateBtn = document.getElementById('celebrateBtn');
+const memoryCards = [...document.querySelectorAll('.memory-card')];
+const themeToggle = document.getElementById('themeToggle');
+const birthdayAudio = document.getElementById('birthdayAudio');
+const coverPlaySong = document.getElementById('coverPlaySong');
+const miniAudioToggle = document.getElementById('miniAudioToggle');
+const miniAudioSeek = document.getElementById('miniAudioSeek');
+const miniAudioElapsed = document.getElementById('miniAudioElapsed');
+const miniAudioDuration = document.getElementById('miniAudioDuration');
+const miniAudioStatus = document.getElementById('miniAudioStatus');
+const audioToggles = [miniAudioToggle, coverPlaySong];
 
-// ดึง Element กระดาษทั้งหมดมาเก็บเรียงตามลำดับจากบนลงล่าง
-const papers = [
-    document.querySelector('#p1'),     // ปก (index 0)
-    document.querySelector('#p2'),     // อวยพร 1 (index 1)
-    document.querySelector('#p2-half'), // อวยพร 2 (index 2)
-    document.querySelector('#p3')      // Spotify/ปกหลัง (index 3)
-];
-const book = document.querySelector('#flipbook');
-const starsContainer = document.querySelector('#shooting-stars-container');
-const concludeText = document.querySelector('.final-conclude-text'); // ดึงข้อความสุดท้ายมาเก็บไว้
+let currentIndex = 0;
+const totalPanels = panels.length;
 
-let currentLocation = 0; // ตำแหน่งหน้าปัจจุบัน
-let maxLocation = papers.length; 
-let isFlipping = false; // ตัวแปรบล็อคการกด/ปัดรัวๆ
-
-// ฟังก์ชันสร้างดาวตก
-function createShootingStars() {
-    starsContainer.style.display = 'block'; 
-    starsContainer.innerHTML = ''; 
-    
-    for(let i = 0; i < 15; i++) {
-        let star = document.createElement('div');
-        star.classList.add('shooting-star');
-        
-        star.style.left = `${Math.random() * 100}vw`;
-        star.style.top = `${Math.random() * -50}vh`; 
-        
-        star.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
-        star.style.animationDelay = `${Math.random() * 3}s`;
-        
-        starsContainer.appendChild(star);
-    }
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${remainingSeconds}`;
 }
 
-// หยุดดาวตก
-function stopShootingStars() {
-    starsContainer.style.display = 'none';
+function updateAudioPosition() {
+  const duration = birthdayAudio.duration;
+  const elapsed = birthdayAudio.currentTime;
+  miniAudioElapsed.textContent = formatTime(elapsed);
+  miniAudioDuration.textContent = formatTime(duration);
+
+  if (Number.isFinite(duration) && duration > 0) {
+    miniAudioSeek.value = String(Math.round((elapsed / duration) * Number(miniAudioSeek.max)));
+  }
+  miniAudioSeek.setAttribute('aria-valuetext', `${formatTime(elapsed)} of ${formatTime(duration)}`);
 }
 
-// ดึง Element ของ Overlay อันใหม่มาเก็บไว้ (เพิ่มตรงด้านบนของไฟล์)
-const finalQuoteOverlay = document.querySelector('#final-quote-overlay'); 
+function updateAudioState(isPlaying) {
+  audioToggles.forEach((toggle) => {
+    const playLabel = toggle === coverPlaySong ? 'Play song' : 'Play';
+    const pauseLabel = toggle === coverPlaySong ? 'Pause song' : 'Pause';
+    toggle.textContent = isPlaying ? pauseLabel : playLabel;
+    toggle.setAttribute('aria-label', isPlaying ? 'Pause song' : 'Play song');
+  });
+  miniAudioStatus.textContent = isPlaying ? 'Now playing.' : birthdayAudio.ended ? 'Song finished.' : 'Paused.';
+}
 
-// ... ฟังก์ชันสร้างดาวตกเหมือนเดิม ...
+birthdayAudio.addEventListener('loadedmetadata', updateAudioPosition);
+birthdayAudio.addEventListener('timeupdate', updateAudioPosition);
+birthdayAudio.addEventListener('play', () => updateAudioState(true));
+birthdayAudio.addEventListener('pause', () => updateAudioState(false));
+birthdayAudio.addEventListener('ended', () => updateAudioState(false));
+birthdayAudio.addEventListener('error', () => {
+  miniAudioStatus.textContent = 'The audio file could not be loaded.';
+});
 
-function checkEnding() {
-    // ตรวจสอบเมื่อเปิดครบทุกแผ่น
-    if(currentLocation === maxLocation) { 
-        createShootingStars();
-        // ✅ ถึงหน้าจบ: สั่งให้ข้อความสุดท้ายกลางจอปรากฏขึ้น (เพิ่มคลาส show)
-        finalQuoteOverlay.classList.add('show'); 
+audioToggles.forEach((toggle) => {
+  toggle.addEventListener('click', () => {
+    if (birthdayAudio.paused) {
+      birthdayAudio.play().catch(() => {
+      miniAudioStatus.textContent = 'Playback could not start. Please try again.';
+      });
     } else {
-        stopShootingStars();
-        // ❌ พลิกกลับ: ซ่อนข้อความ (ลบคลาส show)
-        finalQuoteOverlay.classList.remove('show'); 
+      birthdayAudio.pause();
     }
-}
-// ลูปตั้งค่า Z-index และ Event Listener ให้กระดาษแต่ละแผ่น
-papers.forEach((paper, index) => {
-    // ให้ JS เป็นตัวตั้งค่า z-index เริ่มต้นให้เลย (ปกอยู่บนสุดเสมอ)
-    paper.style.zIndex = maxLocation - index;
-
-    paper.addEventListener('click', () => {
-        // ถ้าระบบกำลังพลิกหน้าอยู่ ให้บล็อคการกดซ้ำ (เพื่อป้องกันบัค)
-        if (isFlipping) return; 
-        isFlipping = true; // ล็อคระบบ
-
-        if (!paper.classList.contains('flipped')) {
-            // เปิดหน้าไปข้างหน้า
-            paper.classList.add('flipped');
-            
-            setTimeout(() => {
-                paper.style.zIndex = index + 1;
-            }, 500);
-            
-            currentLocation++;
-        } 
-        else {
-            // พลิกหน้ากลับหลัง
-            paper.classList.remove('flipped');
-            
-            setTimeout(() => {
-                paper.style.zIndex = maxLocation - index;
-            }, 500);
-            
-            currentLocation--;
-        }
-
-        // จัดสมุดให้สมดุล (แก้บัคตกขอบจอในมือถือ)
-        if (currentLocation === maxLocation) {
-            book.classList.remove('open');
-            book.classList.add('closed-last');
-        } else if (currentLocation > 0) {
-            book.classList.remove('closed-last');
-            book.classList.add('open');
-        } else {
-            book.classList.remove('open');
-            book.classList.remove('closed-last');
-        }
-
-        checkEnding();
-
-        // ปลดล็อคระบบเมื่อกระดาษพลิกเสร็จ (ดีเลย์ 800ms)
-        setTimeout(() => {
-            isFlipping = false;
-        }, 800);
-    });
+  });
 });
 
-// --- ระบบ Swipe สำหรับมือถือ (ปัดซ้าย-ขวาเพื่อเปิดสมุด) ---
-let touchStartX = 0;
-let touchEndX = 0;
-
-book.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-}, {passive: true});
-
-book.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
+miniAudioSeek.addEventListener('input', () => {
+  if (Number.isFinite(birthdayAudio.duration) && birthdayAudio.duration > 0) {
+    birthdayAudio.currentTime = (Number(miniAudioSeek.value) / Number(miniAudioSeek.max)) * birthdayAudio.duration;
+  }
 });
 
-function handleSwipe() {
-    // ถ้าระบบกำลังพลิกหน้าอยู่ ห้ามปัดซ้ำ
-    if (isFlipping) return; 
+function showPanel(index) {
+  currentIndex = Math.min(Math.max(index, 0), totalPanels - 1);
 
-    const swipeThreshold = 50; // ระยะขั้นต่ำในการปัด
+  panels.forEach((panel, idx) => {
+    panel.classList.toggle('active', idx === currentIndex);
+  });
 
-    // ปัดซ้าย (Swipe Left) -> เปิดหน้าต่อไป
-    if (touchStartX - touchEndX > swipeThreshold) {
-        if (currentLocation < maxLocation) {
-            papers[currentLocation].click(); 
-        }
-    }
-    // ปัดขวา (Swipe Right) -> ย้อนกลับไปหน้าก่อนหน้า
-    else if (touchEndX - touchStartX > swipeThreshold) {
-        if (currentLocation > 0) {
-            papers[currentLocation - 1].click(); 
-        }
-    }
+  navButtons.forEach((button) => {
+    const target = button.dataset.target;
+    const matchedPanel = document.getElementById(target);
+    button.classList.toggle('active', matchedPanel && matchedPanel.dataset.index == currentIndex);
+  });
+
+  dots.forEach((dot, idx) => {
+    dot.classList.toggle('active', idx === currentIndex);
+  });
+
+  prevBtn.disabled = currentIndex === 0;
+  prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+  nextBtn.textContent = currentIndex === totalPanels - 1 ? 'Finish' : 'Next';
 }
+
+function nextPanel() {
+  showPanel(currentIndex + 1);
+}
+
+function prevPanel() {
+  showPanel(currentIndex - 1);
+}
+
+navButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const target = button.dataset.target;
+    const panel = document.getElementById(target);
+    if (panel) {
+      showPanel(Number(panel.dataset.index));
+    }
+  });
+});
+
+prevBtn.addEventListener('click', prevPanel);
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < totalPanels - 1) {
+    nextPanel();
+  }
+});
+
+[...document.querySelectorAll('[data-next]')].forEach((button) => {
+  button.addEventListener('click', () => {
+    const nextIndex = Number(button.dataset.next);
+    if (!Number.isNaN(nextIndex)) showPanel(nextIndex);
+  });
+});
+
+[...document.querySelectorAll('[data-target]')].forEach((button) => {
+  button.addEventListener('click', () => {
+    const target = button.dataset.target;
+    const panel = document.getElementById(target);
+    if (panel) showPanel(Number(panel.dataset.index));
+  });
+});
+
+memoryCards.forEach((card) => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('active');
+  });
+});
+
+function createConfettiBurst() {
+  const burstCount = 90;
+  const buttonBounds = celebrateBtn.getBoundingClientRect();
+  const originX = buttonBounds.left + buttonBounds.width / 2;
+  const originY = buttonBounds.top + buttonBounds.height / 2;
+  const spread = Math.min(window.innerWidth * 0.48, 420);
+
+  for (let i = 0; i < burstCount; i++) {
+    const piece = document.createElement('span');
+    piece.className = 'confetti';
+    const shape = Math.floor(Math.random() * 3);
+    if (shape === 1) piece.classList.add('confetti-square');
+    if (shape === 2) piece.classList.add('confetti-streamer');
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 110 + Math.random() * spread;
+    piece.style.left = `${originX}px`;
+    piece.style.top = `${originY}px`;
+    piece.style.background = `var(--confetti-${Math.floor(Math.random() * 5) + 1})`;
+    piece.style.setProperty('--dx', `${Math.cos(angle) * distance}px`);
+    piece.style.setProperty('--dy', `${Math.sin(angle) * distance - 70}px`);
+    piece.style.setProperty('--turn', `${Math.random() * 720 - 360}deg`);
+    piece.style.animationDelay = `${Math.random() * 0.28}s`;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 2400);
+  }
+}
+
+celebrateBtn.addEventListener('click', () => {
+  createConfettiBurst();
+  celebrateBtn.textContent = 'Celebrating!';
+  setTimeout(() => {
+    celebrateBtn.textContent = 'Celebrate';
+  }, 1400);
+});
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  themeToggle.textContent = isDark ? 'Light mode' : 'Dark mode';
+});
+
+showPanel(0);

@@ -1,107 +1,148 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday - Vintage Flip Book</title>
-    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Mali:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="shooting-stars-container"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+    <div class="stars" aria-hidden="true"></div>
 
-    <div class="book-wrapper">
-        <div class="book" id="flipbook">
-
-            <div class="paper" id="p3">
-                <div class="front sepia-bg">
-                    <div class="page-content">
-                        <iframe data-testid="embed-iframe" style="border-radius:12px"
-                        src="https://open.spotify.com/embed/track/0hWzDHF10kCJFQ2hMg6FYX?utm_source=generator"
-                        width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay;
-                        clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-                        </iframe>
-                        <p class="handwriting text-center" style="margin-top: 20px;">ขอมีความสุขมากๆนะคะ 💟</p>
-                    </div>
-                </div>
-                <div class="back kraft-bg">
-                    </div>
-            </div>
-
-            <div class="paper" id="p2-half">
-                <div class="front sepia-bg">
-                    <div class="page-content">
-                        <p class="handwriting">
-                            ถึงจะนึกคำดีๆไม่ออก แต่ก็หวังนะ<br>
-                            หวังให้ท้องฟ้าที่สดใสจะเยียวยาจิตใจในวันที่คุณเหนื่อย<br>
-                            หวังให้อาทารทุกมื้อที่ได้กินช่างแสนอร่อยและเต็มไปด้วยความสุข<br>
-                            หวังให้สารอาหารที่ได้รับช่วยหล่อเลี้ยงและบำรุง<br>
-                            หวังให้อากาศเป็นอย่างใจของคุณ<br>
-                            หวังให้คุณได้สมหวังไม่ว่าเรื่องใด<br>
-                            หวังให้คุณมีวันที่ดีมากกว่าวันที่แย่อยู่เสมอ<br>
-                            หวังให้คุณมีวันที่แบ่งบานและสดใสยิ่งกว่าดอกไม้ใดบนโลก<br>
-                            สุดท้าย...หวังให้ทุกคำอวยพรที่ดีเป็นของคุณทั้งหมด<br>
-                            ฉันหวังเพียงแค่นั้น.<br>
-                        </p>
-                    </div>
-                </div>
-                <div class="back sepia-bg">
-                    <div class="page-content text-center">
-                        <div class="star-graphic" style="opacity: 0.3;">✨</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="paper" id="p2">
-                <div class="front sepia-bg">
-                    <div class="page-content">
-                        <p class="handwriting">
-                            สุขสันต์วันเกิดนะ! <br><br>
-                            เวลาที่ต้องอวยพรคนอื่นน่ะ ปกติก็จะชอบนึกไม่ออกว่าควรจะพูดอะไรดี ไม่รู้เลยว่าต้องพูดอะไร ได้แต่อวยพรสั้นๆแบบที่นิยมกัน
-                            แต่อันนี้ตั้งใจคิดตั้งใจทำมาให้โดยเฉพาะเลย<br><br>
-
-                            
-                        </p>
-                    </div>
-                </div>
-                <div class="back sepia-bg">
-                    <div class="page-content">
-                        <div class="star-graphic" style="opacity: 0.3;">✨</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="paper" id="p1">
-                <div class="front kraft-bg cover-shadow">
-                    <div class="page-content cover-content">
-                        <h1 class="handwriting title-text">สุขสันต์วันเกิด</h1>
-                        <!-- <div class="star-graphic">⭐✨⭐</div> -->
-                        <p class="click-hint">ลองเปิดดูสิ ↘</p>
-                    </div>
-                </div>
-                <div class="back sepia-bg">
-                    <div class="page-content text-center">
-                        <p class="charm-text quote-text">
-                            "ฉันอธิษฐานต่อดวงดาว<br>
-                            ขอให้ความปรารถนา<br>
-                            ของคุณได้เป็นจริง"
-                        </p>
-                    </div>
-                </div>
-            </div>
-
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">Your Day</div>
+        <div class="topbar-actions">
+          <nav class="nav" aria-label="Birthday sections">
+            <button class="nav-btn active" data-target="cover">Home</button>
+            <button class="nav-btn" data-target="letter">Letter</button>
+            <button class="nav-btn" data-target="gift">Wishes</button>
+            <button class="nav-btn" data-target="final">Final</button>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">Dark mode</button>
         </div>
-    </div>
+      </header>
 
-    <div id="final-quote-overlay">
-        <p class="charm-text">
-            "ฉันอธิษฐานต่อดวงดาว<br>
-                            ขอให้ความปรารถนา<br>
-                            ของคุณได้เป็นจริง"
-        </p>
+      <aside class="mini-player glass-card" aria-label="Persistent song player">
+        <audio id="birthdayAudio" class="visually-hidden" preload="metadata" aria-label="นับหนึ่ง (From now on) by BILLKIN">
+          <source src="BILLKIN - นับหนึ่ง (From now on) - Official MV (audio-extractor.net).mp3" type="audio/mpeg" />
+          Your browser does not support audio playback.
+        </audio>
+        <div class="mini-player-track">
+          <span class="mini-player-mark" aria-hidden="true">♫</span>
+          <div class="mini-player-meta">
+            <span class="mini-player-eyebrow">Now playing</span>
+            <span class="mini-player-title">นับหนึ่ง (From now on) · BILLKIN</span>
+          </div>
+        </div>
+        <button class="mini-play-toggle" id="miniAudioToggle" type="button" aria-label="Play song">Play</button>
+        <div class="mini-seek-control">
+          <label class="visually-hidden" for="miniAudioSeek">Song position</label>
+          <input id="miniAudioSeek" type="range" min="0" max="1000" value="0" step="1" aria-valuetext="0:00" />
+          <div class="player-time" aria-hidden="true">
+            <span id="miniAudioElapsed">0:00</span>
+            <span id="miniAudioDuration">--:--</span>
+          </div>
+        </div>
+        <span class="visually-hidden" id="miniAudioStatus" role="status">Paused.</span>
+      </aside>
+
+      <main class="panel-view">
+        <section class="panel active" id="cover" data-index="0">
+          <div class="cover-card glass-card">
+            <div class="badge">For someone very special</div>
+            <h1>Happy Birthday</h1>
+            <p>
+              Today is for your smile, your light, and the beautiful life you carry with you.
+            </p>
+            <div class="cta-row">
+              <button class="primary-btn" data-next="1">Open the letter</button>
+              <button class="secondary-btn" id="coverPlaySong" type="button" aria-label="Play song">Play song</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="letter" data-index="1">
+          <div class="glass-card message-card">
+            <span class="section-tag">A little note</span>
+            <h2>Dear you,</h2>
+            <p>
+              สุขสันต์วันเกิดนะคะ<br>
+                เวลาที่ต้องอวยพรคนอื่นน่ะ ปกติก็จะชอบนึกไม่ออกว่าควรจะพูดอะไรดี ไม่รู้เลยว่าต้องพูดอะไร
+                แต่วันนี้ตั้งใจคิดและทำขึ้นมาให้โดยเฉพาะเลย<br><br>
+            </p>
+            <p>
+              เพราะถึงจะนึกคำดีๆไม่ออก แต่ก็หวังอยู่ตลอดเลยนะ<br><br>
+                หวังให้ท้องฟ้าที่สดใสจะเยียวยาจิตใจในวันที่คุณเหนื่อย<br>
+                หวังให้อาทารทุกมื้อที่ได้กินช่างแสนอร่อยและเต็มไปด้วยความสุข<br>
+                หวังให้สารอาหารที่ได้รับช่วยหล่อเลี้ยงและบำรุงร่างกาย<br>
+                หวังให้อากาศเป็นอย่างใจของคุณอยู่เสมอ<br><br>
+                หวังให้ร่างกายของคุณแข็งแรงปราศจากโรคภัยไข้เจ็บใด<br>
+                
+                หวังให้คุณมีวันที่ดีมากกว่าวันที่แย่อยู่เสมอ<br>
+                หวังให้คุณได้สมหวังไม่ว่าเรื่องใดก็ตาม<br>
+                หวังให้คุณมีวันที่แบ่งบานและสดใสยิ่งกว่าดอกไม้ใดบนโลก<br>
+                สุดท้าย...หวังให้ทุกคำอวยพรที่ดีเป็นของคุณทั้งหมด<br>
+                ฉันหวังเพียงแค่นั้น.<br>
+            </p>
+            <p>
+              ขอให้คุณมีวันที่ดีขึ้นกว่าเดิมทุกวัน และมีความสุขแบบที่สมกับคนที่น่ารักขนาดนี้
+            </p>
+            <button class="primary-btn" data-next="2">Next wish</button>
+          </div>
+        </section>
+
+        <section class="panel" id="gift" data-index="2">
+          <div class="gift-grid">
+            <article class="mini-card glass-card memory-card">
+              <span class="mini-label">Wish 1</span>
+              <h3>May your heart be warm</h3>
+              <p>ให้ทุกวันที่ผ่านไปเต็มไปด้วยความอุ่นใจ</p>
+            </article>
+            <article class="mini-card glass-card memory-card">
+              <span class="mini-label">Wish 2</span>
+              <h3>May your dreams bloom</h3>
+              <p>ให้ความฝันของคุณเติบโตและกลายเป็นจริง</p>
+            </article>
+            <article class="mini-card glass-card memory-card">
+              <span class="mini-label">Wish 3</span>
+              <h3>May your days feel light</h3>
+              <p>ให้ทุกวันของคุณเบิกบานและเต็มไปด้วยรอยยิ้ม</p>
+            </article>
+          </div>
+          <button class="primary-btn" data-next="3">Continue</button>
+        </section>
+
+        <section class="panel" id="final" data-index="3">
+          <div class="glass-card final-card">
+            <p class="quote-text">
+              "ฉันอธิษฐานต่อดวงดาว<br />
+              ขอให้ความปรารถนา<br />
+              ของคุณได้เป็นจริง"
+            </p>
+            <button class="celebrate-btn" id="celebrateBtn">Celebrate</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="bottom-bar">
+        <button class="ghost-btn" id="prevBtn">Back</button>
+        <div class="progress" aria-label="Section progress">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button class="ghost-btn" id="nextBtn">Next</button>
+      </footer>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
 
