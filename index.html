@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
     <div class="bg-orb orb-one"></div>
@@ -30,7 +30,7 @@
 
       <aside class="mini-player glass-card" aria-label="Persistent song player">
         <audio id="birthdayAudio" class="visually-hidden" preload="metadata" aria-label="นับหนึ่ง (From now on) by BILLKIN">
-          <source src="BILLKIN - นับหนึ่ง (From now on) - Official MV (audio-extractor.net).mp3" type="audio/mpeg" />
+          <source src="assets/audio/BILLKIN - นับหนึ่ง (From now on) - Official MV (audio-extractor.net).mp3" type="audio/mpeg" />
           Your browser does not support audio playback.
         </audio>
         <div class="mini-player-track">
@@ -98,7 +98,7 @@
         </section>
 
         <section class="panel" id="gift" data-index="2">
-          <div class="gift-grid">
+          <div class="gift-grid" id="giftGrid">
             <article class="mini-card glass-card memory-card">
               <span class="mini-label">Wish 1</span>
               <h3>May your heart be warm</h3>
@@ -115,6 +115,19 @@
               <p>ให้ทุกวันของคุณเบิกบานและเต็มไปด้วยรอยยิ้ม</p>
             </article>
           </div>
+          <section class="glass-card wish-editor" aria-labelledby="wishEditorTitle">
+            <span class="section-tag">Make it yours</span>
+            <h2 id="wishEditorTitle">Add your own wish</h2>
+            <p>Create a wish card with a title and message, just like the birthday wishes above.</p>
+            <form id="wishForm" class="wish-form">
+              <label for="wishTitle">Wish title</label>
+              <input id="wishTitle" name="title" type="text" maxlength="60" placeholder="e.g. Keep smiling" required>
+              <label for="wishMessage">Wish message</label>
+              <textarea id="wishMessage" name="message" maxlength="240" rows="3" placeholder="Write your wish..." required></textarea>
+              <button class="primary-btn" type="submit">Add wish</button>
+            </form>
+            <p id="wishStatus" class="wish-status" role="status" aria-live="polite"></p>
+          </section>
           <button class="primary-btn" data-next="3">Continue</button>
         </section>
 
@@ -142,7 +155,8 @@
       </footer>
     </div>
 
-    <script src="script.js"></script>
+    <div id="wishCelebration" class="wish-celebration" aria-hidden="true"></div>
+
+    <script src="assets/js/script.js"></script>
   </body>
 </html>
-

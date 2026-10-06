@@ -10,8 +10,10 @@ This folder has been updated into a simple app structure so it can be served loc
 - [app.py](app.py) — Flask application entry point
 - [requirements.txt](requirements.txt) — Python dependency list
 - [index.html](index.html) — page structure and greeting content
-- [style.css](style.css) — visual design and animations
-- [script.js](script.js) — flipbook behavior and effects
+- [assets/css/](assets/css/) — visual design and animations
+- [assets/js/](assets/js/) — flipbook behavior and effects
+- [assets/audio/](assets/audio/) — local birthday music
+- [server.js](server.js) and [package.json](package.json) — optional Express server
 
 ## Run locally
 
@@ -34,6 +36,10 @@ This address is for devices on the same local network; it does not publish the s
 
 ## Notes
 This is a minimal web app foundation, which makes it easier to expand with more pages, routes, or backend features later.
+
+The Wishes section starts with the original three birthday cards. Wishes can be added, edited, and deleted in the same card grid; numbering adjusts when a wish is deleted. Wishes are stored in the current browser's local storage, so they remain on that browser but do not sync across devices or visitors.
+
+Static styles, scripts, and music are grouped under `assets/`. The root `index.html` stays in place so GitHub Pages can serve the site without extra configuration.
 
 ## Version tracking
 Project changes are recorded in [updatedetails.md](updatedetails.md). Every meaningful update should add a new version entry there so the latest changes and verification notes are easy to follow.
